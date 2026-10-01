@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Vista previa de Arte que Nace." />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23231f20'/%3E%3Cpath d='M17 43V20h10l5 15 5-15h10v23h-7V29l-5 14h-6l-5-14v14z' fill='%23e9003d'/%3E%3C/svg%3E" />
+    <title>Arte que Nace | Tienda</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <div class="app-shell">
+      <aside class="category-rail" aria-label="Categorías">
+        <a class="brand-mark" href="#inicio" aria-label="Arte que Nace, inicio">
+          <span aria-hidden="true">✦</span>
+          <span>AN</span>
+        </a>
+
+        <nav class="category-nav" aria-label="Explorar por categoría">
+          <button class="category-button is-active" type="button" data-category="Navidad" aria-pressed="true">
+            <span class="category-icon" aria-hidden="true">✦</span>
+            <span class="category-label">Navidad</span>
+            <span class="category-chevron" aria-hidden="true">›</span>
+          </button>
+          <button class="category-button" type="button" data-category="Religión" aria-pressed="false">
+            <span class="category-icon" aria-hidden="true">♰</span>
+            <span class="category-label">Religión</span>
+            <span class="category-chevron" aria-hidden="true">›</span>
+          </button>
+          <button class="category-button" type="button" data-category="Video Juegos" aria-pressed="false">
+            <span class="category-icon" aria-hidden="true">⌘</span>
+            <span class="category-label">Video Juegos</span>
+            <span class="category-chevron" aria-hidden="true">›</span>
+          </button>
+          <button class="category-button" type="button" data-category="Entretenimiento" aria-pressed="false">
+            <span class="category-icon" aria-hidden="true">◉</span>
+            <span class="category-label">Entretenimiento</span>
+            <span class="category-chevron" aria-hidden="true">›</span>
+          </button>
+          <button class="category-button" type="button" data-category="Cotizaciones" aria-pressed="false">
+            <span class="category-icon" aria-hidden="true">☷</span>
+            <span class="category-label">Cotizaciones</span>
+            <span class="category-chevron" aria-hidden="true">›</span>
+          </button>
+        </nav>
+      </aside>
+
+      <main id="contenido">
+        <header class="site-header">
+          <a class="wordmark" href="#inicio">ARTE <span>QUE NACE</span></a>
+          <nav class="header-nav" aria-label="Navegación principal">
+            <a href="#nosotros">Nosotros</a>
+            <a href="#contacto">Contacto</a>
+          </nav>
+          <div class="header-actions" aria-label="Acciones de tienda">
+            <button type="button" aria-label="Buscar">⌕</button>
+            <button type="button" aria-label="Favoritos">♡</button>
+            <button class="cart-button" type="button" aria-label="Carrito, 0 productos">♧<span>0</span></button>
+          </div>
+        </header>
+
+        <section class="hero" id="inicio" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow">Colección destacada</p>
+            <h1 id="hero-title">Hecho para <em id="active-category">Navidad</em>.</h1>
+            <p id="hero-description">Detalles hechos a mano para regalar, decorar y celebrar con intención.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#coleccion">Ver colección</a>
+              <button class="button button-ghost" id="open-panel" type="button" aria-expanded="false">Ver categorías</button>
+            </div>
+          </div>
+          <div class="hero-art" aria-label="Selección visual de productos artesanales">
+            <img src="assets/hero-art.png" alt="Cerámica artesanal, ovillos de lana y láminas decorativas con gatos." />
+          </div>
+        </section>
+
+        <section class="collection" id="coleccion" aria-labelledby="collection-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Descubre</p>
+              <h2 id="collection-title">Elegidos para ti</h2>
+            </div>
+            <p class="category-state"><span></span><span id="category-status">Navidad seleccionada</span></p>
+          </div>
+          <div class="product-grid">
+            <article class="product-card">
+              <div class="product-visual yarn"></div>
+              <div class="product-info"><div><h3>Kit creativo</h3><p>Edición limitada</p></div><button type="button" aria-label="Agregar Kit creativo">+</button></div>
+            </article>
+            <article class="product-card">
+              <div class="product-visual mug"></div>
+              <div class="product-info"><div><h3>Taza ilustrada</h3><p>Hecha a mano</p></div><button type="button" aria-label="Agregar Taza ilustrada">+</button></div>
+            </article>
+            <article class="product-card">
+              <div class="product-visual print"></div>
+              <div class="product-info"><div><h3>Lámina artística</h3><p>Serie felina</p></div><button type="button" aria-label="Agregar Lámina artística">+</button></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="about" id="nosotros">
+          <p class="eyebrow">Nosotros</p>
+          <h2>Objetos con carácter, creados para acompañarte.</h2>
+          <a href="#contacto">Conocer el proyecto</a>
+        </section>
+        <footer id="contacto"><span>ARTE QUE NACE</span><a href="mailto:hola@artequenace.com">hola@artequenace.com</a></footer>
+      </main>
+    </div>
+
+    <dialog class="category-panel" id="category-panel" aria-labelledby="panel-title">
+      <div class="panel-heading"><h2 id="panel-title">Categorías</h2><button id="close-panel" type="button" aria-label="Cerrar categorías">×</button></div>
+      <p>Selecciona una categoría para actualizar la colección principal.</p>
+      <div id="panel-buttons"></div>
+    </dialog>
+    <script src="app.js"></script>
+  </body>
+</html>
