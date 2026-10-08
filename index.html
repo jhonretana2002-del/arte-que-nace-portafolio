@@ -46,34 +46,43 @@
       </aside>
 
       <main id="contenido">
-        <header class="site-header">
-          <a class="wordmark" href="#inicio" aria-label="Arte que Nace, inicio">
-            <img src="assets/logo-arte-que-nace.png" alt="" />
-            <span>ARTE QUE NACE</span>
-          </a>
-          <nav class="header-nav" aria-label="Navegación principal">
-            <a href="#nosotros">Nosotros</a>
-            <a href="#contacto">Contacto</a>
-          </nav>
-          <div class="header-actions" aria-label="Acciones de tienda">
-            <button type="button" aria-label="Buscar">⌕</button>
-            <button type="button" aria-label="Favoritos">♡</button>
-            <button class="cart-button" type="button" aria-label="Carrito, 0 productos">♧<span>0</span></button>
-          </div>
-        </header>
-
         <section class="hero" id="inicio" aria-labelledby="hero-title">
           <div class="hero-copy">
-            <p class="eyebrow">Colección destacada</p>
-            <h1 id="hero-title">Hecho para <em id="active-category">Navidad</em>.</h1>
-            <p id="hero-description">Detalles hechos a mano para regalar, decorar y celebrar con intención.</p>
+            <p class="eyebrow">Arte textil hecho a mano</p>
+            <h1 id="hero-title">Hilos que se convierten en <em>historias.</em></h1>
+            <p class="hero-description">El canvas tejido es una expresión de arte textil que une color, paciencia y detalle. En Arte que Nace transformamos lana e hilos en cuadros, figuras, bolsos y piezas personalizadas que celebran personajes, recuerdos e ideas únicas.</p>
             <div class="hero-actions">
-              <a class="button button-primary" href="#coleccion">Ver colección</a>
-              <button class="button button-ghost" id="open-panel" type="button" aria-expanded="false">Ver categorías</button>
+              <a class="button button-primary" href="#coleccion">Conoce las piezas</a>
+              <a class="button button-ghost" href="#contacto">Solicita una cotización</a>
             </div>
           </div>
-          <div class="hero-art" aria-label="Selección visual de productos artesanales">
-            <img src="assets/hero-art.png" alt="Cerámica artesanal, ovillos de lana y láminas decorativas con gatos." />
+          <div class="hero-gallery" aria-label="Galería rotativa de obras textiles hechas a mano">
+            <figure class="gallery-slide is-active" style="--slide-image: url('assets/canvas-paisaje.jpg');">
+              <img src="assets/canvas-paisaje.jpg" alt="Cuadro tejido de un paisaje con sol, nubes y flores." />
+            </figure>
+            <figure class="gallery-slide" style="--slide-image: url('assets/canvas-atardecer.jpg');">
+              <img src="assets/canvas-atardecer.jpg" alt="Cuadro tejido de un atardecer con palmeras y flamencos." />
+            </figure>
+            <figure class="gallery-slide" style="--slide-image: url('assets/bolso-tejido.jpg');">
+              <img src="assets/bolso-tejido.jpg" alt="Bolso azul tejido a mano con la figura de un perro." />
+            </figure>
+            <figure class="gallery-slide" style="--slide-image: url('assets/canvas-tortugas.jpg');">
+              <img src="assets/canvas-tortugas.jpg" alt="Cuadros textiles inspirados en las Tortugas Ninja." />
+            </figure>
+            <figure class="gallery-slide" style="--slide-image: url('assets/canvas-sombrerero.jpg');">
+              <img src="assets/canvas-sombrerero.jpg" alt="Cuadro tejido inspirado en el Sombrerero Loco." />
+            </figure>
+            <figure class="gallery-slide" style="--slide-image: url('assets/canvas-dia-muertos.jpg');">
+              <img src="assets/canvas-dia-muertos.jpg" alt="Cuadro textil de una Catrina del Día de Muertos." />
+            </figure>
+            <figure class="gallery-slide" style="--slide-image: url('assets/canvas-retrato.jpg');">
+              <img src="assets/canvas-retrato.jpg" alt="Retrato artístico tejido a mano con hilos de colores." />
+            </figure>
+            <div class="gallery-veil" aria-hidden="true"></div>
+            <div class="gallery-meta" aria-live="polite">
+              <span class="gallery-count">01 / 07</span>
+              <span>Obras creadas hilo a hilo</span>
+            </div>
           </div>
         </section>
 
