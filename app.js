@@ -25,7 +25,8 @@ function fitGalleryImages() {
     if (!image.naturalWidth || !image.naturalHeight) return;
 
     const ratio = image.naturalWidth / image.naturalHeight;
-    const width = Math.min(frameWidth, frameHeight * ratio);
+    const zoom = window.matchMedia('(max-width: 900px)').matches ? 1 : 1.12;
+    const width = Math.min(frameWidth, frameHeight * ratio * zoom);
     image.style.width = `${width}px`;
     image.style.height = `${width / ratio}px`;
   });
