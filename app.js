@@ -2,6 +2,7 @@ const buttons = [...document.querySelectorAll('.category-button')];
 const status = document.querySelector('#category-status');
 const mobileCategoryTrigger = document.querySelector('#mobile-category-trigger');
 const mobileCategoryLabel = document.querySelector('#mobile-category-label');
+const mobileCategoryIcon = document.querySelector('.mobile-category-icon');
 const categoryPanel = document.querySelector('#category-panel');
 const panelButtons = document.querySelector('#panel-buttons');
 
@@ -27,6 +28,7 @@ function selectCategory(name) {
   });
   status.textContent = `${name} seleccionada`;
   mobileCategoryLabel.textContent = name;
+  mobileCategoryIcon.textContent = buttons.find((button) => button.dataset.category === name)?.querySelector('.category-icon').textContent || '✦';
   categoryChoices.forEach((choice) => {
     const selected = choice.dataset.category === name;
     choice.classList.toggle('is-active', selected);
@@ -105,19 +107,21 @@ gallery.addEventListener('keydown', (event) => {
   }
 });
 
-let touchStart = null;
-gallery.addEventListener('touchstart', (event) => {
-  if (event.touches.length !== 1) return;
-  touchStart = { x: event.touches[0].clientX, y: event.touches[0].clientY };
-}, { passive: true });
-gallery.addEventListener('touchend', (event) => {
-  if (!touchStart || event.changedTouches.length !== 1) return;
-  const deltaX = event.changedTouches[0].clientX - touchStart.x;
-  const deltaY = event.changedTouches[0].clientY - touchStart.y;
-  touchStart = null;
+let dragStart = null;
+gallery.addEventListener('dragstart', (event) => event.preventDefault());
+gallery.addEventListener('pointerdown', (event) => {
+  if (event.button !== 0 || event.target.closest('.gallery-arrow')) return;
+  dragStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  gallery.setPointerCapture(event.pointerId);
+});
+gallery.addEventListener('pointerup', (event) => {
+  if (!dragStart || event.pointerId !== dragStart.id) return;
+  const deltaX = event.clientX - dragStart.x;
+  const deltaY = event.clientY - dragStart.y;
+  dragStart = null;
   if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
     stepSlide(deltaX < 0 ? 1 : -1);
   }
-}, { passive: true });
-gallery.addEventListener('touchcancel', () => { touchStart = null; });
+});
+gallery.addEventListener('pointercancel', () => { dragStart = null; });
 restartSlideTimer();
