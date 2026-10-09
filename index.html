@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23231f20'/%3E%3Cpath d='M17 43V20h10l5 15 5-15h10v23h-7V29l-5 14h-6l-5-14v14z' fill='%23e9003d'/%3E%3C/svg%3E" />
     <title>Arte que Nace | Tienda</title>
     <link rel="preload" as="image" href="assets/logo-arte-que-nace-360.png" media="(min-width: 901px)" />
-    <link rel="stylesheet" href="styles.css?v=hero-balance-1" />
+    <link rel="stylesheet" href="styles.css?v=gallery-controls-1" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -44,6 +44,11 @@
             <span class="category-chevron" aria-hidden="true">›</span>
           </button>
         </nav>
+        <button class="mobile-category-trigger" id="mobile-category-trigger" type="button" aria-haspopup="dialog" aria-controls="category-panel" aria-expanded="false">
+          <span class="mobile-category-icon" aria-hidden="true">✦</span>
+          <span id="mobile-category-label">Navidad</span>
+          <span class="mobile-category-chevron" aria-hidden="true">⌃</span>
+        </button>
       </aside>
 
       <main id="contenido">
@@ -57,7 +62,7 @@
               <a class="button button-ghost" href="#contacto">Solicita una cotización</a>
             </div>
           </div>
-          <div class="hero-gallery" aria-label="Galería rotativa de obras textiles hechas a mano">
+          <div class="hero-gallery" role="region" aria-roledescription="carrusel" aria-label="Galería rotativa de obras textiles hechas a mano" tabindex="0">
             <figure class="gallery-slide is-active">
               <img src="assets/galeria-bolso-perro.jpg" alt="Bolso tejido a mano con la cara de un perro." fetchpriority="high" decoding="async" />
             </figure>
@@ -80,6 +85,10 @@
               <img src="assets/galeria-retrato-azul.jpg" alt="Retrato pixelado azul tejido en lana." decoding="async" />
             </figure>
             <div class="gallery-veil" aria-hidden="true"></div>
+            <div class="gallery-controls" aria-label="Controles de la galería">
+              <button class="gallery-arrow" id="gallery-prev" type="button" aria-label="Imagen anterior">‹</button>
+              <button class="gallery-arrow" id="gallery-next" type="button" aria-label="Imagen siguiente">›</button>
+            </div>
             <div class="gallery-meta" aria-live="polite">
               <span class="gallery-count">01 / 07</span>
               <span>Obras creadas hilo a hilo</span>
@@ -132,6 +141,6 @@
       <p>Selecciona una categoría para actualizar la colección principal.</p>
       <div id="panel-buttons"></div>
     </dialog>
-    <script src="app.js?v=gallery-single-1"></script>
+    <script src="app.js?v=gallery-controls-1"></script>
   </body>
 </html>
