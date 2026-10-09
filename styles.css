@@ -48,11 +48,11 @@ main { overflow:hidden; }
   object-position:right center;
   filter:none;
   -webkit-mask-image:
-    linear-gradient(90deg, transparent 0%, #000 12%),
+    linear-gradient(90deg, transparent 0%, rgba(0,0,0,.08) 6%, rgba(0,0,0,.5) 15%, #000 25%),
     linear-gradient(180deg, transparent 0%, #000 3%, #000 87%, transparent 100%);
   -webkit-mask-composite:source-in;
   mask-image:
-    linear-gradient(90deg, transparent 0%, #000 12%),
+    linear-gradient(90deg, transparent 0%, rgba(0,0,0,.08) 6%, rgba(0,0,0,.5) 15%, #000 25%),
     linear-gradient(180deg, transparent 0%, #000 3%, #000 87%, transparent 100%);
   mask-composite:intersect;
 }
@@ -73,5 +73,9 @@ main { overflow:hidden; }
       linear-gradient(0deg, var(--ink) 0%, transparent 21%);
   }
   .gallery-slide { justify-content:center; }
-  .gallery-slide img { object-position:center; }
+  .gallery-slide img {
+    object-position:center;
+    -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 6%, #000 86%, transparent 100%);
+    mask-image:linear-gradient(180deg, transparent 0%, #000 6%, #000 86%, transparent 100%);
+  }
 }
