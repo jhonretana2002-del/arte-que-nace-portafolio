@@ -13,8 +13,27 @@ function selectCategory(name) {
 buttons.forEach((button) => button.addEventListener('click', () => selectCategory(button.dataset.category)));
 
 const slides = [...document.querySelectorAll('.gallery-slide')];
+const gallery = document.querySelector('.hero-gallery');
 const slideCount = document.querySelector('.gallery-count');
 let activeSlide = 0;
+
+// Ajusta cada foto al mismo marco sin recortar la obra ni dejar aire dentro de su máscara.
+function fitGalleryImages() {
+  const { width: frameWidth, height: frameHeight } = gallery.getBoundingClientRect();
+  slides.forEach((slide) => {
+    const image = slide.querySelector('img');
+    if (!image.naturalWidth || !image.naturalHeight) return;
+
+    const ratio = image.naturalWidth / image.naturalHeight;
+    const width = Math.min(frameWidth, frameHeight * ratio);
+    image.style.width = `${width}px`;
+    image.style.height = `${width / ratio}px`;
+  });
+}
+
+slides.forEach((slide) => slide.querySelector('img').addEventListener('load', fitGalleryImages));
+new ResizeObserver(fitGalleryImages).observe(gallery);
+fitGalleryImages();
 
 function showSlide(index) {
   activeSlide = (index + slides.length) % slides.length;
