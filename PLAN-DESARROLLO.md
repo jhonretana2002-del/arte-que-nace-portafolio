@@ -1,82 +1,50 @@
-# Plan de desarrollo — Arte que Nace
+# Plan de desarrollo vigente — Arte que Nace
 
-## Principios de la solución
+La única guía de implementación vigente es [`guia-desarrollo-cotizaciones-arte-que-nace.pdf`](output/pdf/guia-desarrollo-cotizaciones-arte-que-nace.pdf). Este archivo resume su secuencia y el estado **comprobado localmente**.
 
-La tienda se construirá como una aplicación modular, ligera y preparada para crecer. El primer prototipo será un **portafolio portátil**: una carpeta autónoma que se abre desde una PC o celular, sin VPS, instalación, base de datos ni conexión obligatoria. La experiencia pública priorizará HTML estático, CSS y JavaScript mínimo. El servidor se ocupará solamente cuando haga falta: administración, inventario, pedidos, autenticación o integración con pagos.
+## Decisión de base de datos
 
-**Reglas técnicas de base**
+- **Ahora:** usar Supabase (PostgreSQL, autenticación y almacenamiento) para llevar el panel de demo a un entorno alfa de ensayo. La organización gratuita «Arte que Nace» y el proyecto «Arte que Nace - ensayo» ya están creados. En el desarrollo local, la URL y la clave publicable del proyecto están en `site-config.js`, pero todavía no se han aplicado las migraciones ni configurado una cuenta administradora.
+- **Más adelante:** evaluar migración a MySQL/MariaDB solo si resulta conveniente al elegir el servidor definitivo. No será un cambio de URL ni una conversión automática de los archivos `.sql` actuales: habrá que adaptar esquema, API, autenticación, archivos, funciones de cotización y pruebas. Cambiar de alojamiento web no obliga por sí solo a migrar desde Supabase.
+- **Hasta entonces:** no activar `mode: 'live'` ni afirmar que el panel guarda datos reales antes de aplicar migraciones y completar pruebas de permisos en el proyecto de ensayo.
 
-- Separar la interfaz pública, el panel administrativo y el servicio de pedidos/pagos.
-- Mantener catálogo, categorías, productos y pedidos como módulos independientes; ningún componente debe depender directamente de otro.
-- Procesar tarjetas únicamente con una pasarela certificada. La tienda nunca guarda datos de tarjeta.
-- Optimizar imágenes antes de publicarlas (WebP/AVIF, tamaños responsivos y carga diferida), usar caché de navegador y comprimir las respuestas del servidor.
-- Empezar con una única base de datos relacional (PostgreSQL o MariaDB) y copias de seguridad automáticas. Evitar microservicios durante la primera etapa.
+## Fase 1 de 3 — Panel privado y catálogo ordenable
 
-## Fase 1 — Fundaciones, identidad y catálogo navegable
+Objetivo: administrar categorías, artículos y paquetes sin precios, con publicación controlada y vista pública por categoría.
 
-**Objetivo:** tener un portafolio interactivo rápido, coherente y fácil de ampliar, listo para mostrar productos y captar pedidos.
+- [x] Código local de formularios para crear y editar categorías, artículos y paquetes.
+- [x] Código local de ocultación/publicación, orden, imágenes y relaciones de paquetes.
+- [x] Código local de búsqueda y filtros opcionales en listas administrativas.
+- [x] Vista preliminar portátil para buscar, filtrar y previsualizar ejemplos sin guardar cambios.
+- [ ] Conectar un proyecto Supabase de ensayo con cuenta administradora y migraciones aplicadas.
+- [ ] Probar de verdad permisos RLS/Storage con visitante, usuario sin rol y administrador.
+- [ ] Crear, editar, ordenar, publicar y ocultar contenido real desde el panel; verificar que persiste y que la vista pública coincide.
+- [ ] Hacer la prueba autónoma de la dueña y documentar resultados.
 
-**Alcance**
+**Estado:** fase 1 aún abierta. La presencia de código no sustituye la prueba conectada.
 
-- Convertir el diseño aprobado en componentes reutilizables: encabezado, menú lateral de categorías, tarjetas de producto, ficha de producto, pie de página, modal y estados de selección.
-- Implementar las categorías Navidad, Religión, Video Juegos, Entretenimiento y Cotizaciones. El menú lateral marcará claramente la categoría activa y abrirá sus subcategorías cuando existan.
-- Crear las páginas Inicio, Catálogo, ficha de producto, Nosotros y Contacto.
-- Incorporar catálogo administrable: nombre, descripción, precio, existencias, imágenes, categoría, variantes y estado de publicación.
-- Preparar la versión móvil y accesible: navegación por teclado, etiquetas para lectores de pantalla, contraste suficiente y formularios claros.
-- Entregar el portafolio como una carpeta portátil: abrir `index.html` para mostrarlo sin instalar nada o publicarlo posteriormente en cualquier hosting estático.
-- Definir, sin implementar todavía, la futura instalación en VPS: dominio, HTTPS, Nginx, firewall, copias de seguridad y monitoreo básico.
+## Fase 2 de 3 — Cotizaciones operables
 
-**Resultado verificable:** en una PC o celular, el portafolio muestra la marca, permite navegar por categoría, resalta la selección activa y presenta el catálogo conceptual sin depender de un servidor. El mismo código puede publicarse más adelante en un VPS pequeño.
+Objetivo: consentimiento versionado, solicitud sin precio, almacenamiento fiable, aviso y bandeja de seguimiento.
 
-## Fase 2 — Ventas, pagos y operación diaria
+- [x] Código local del formulario, términos versionados, función de envío y bandeja administrativa.
+- [ ] Aprobar textos legales y destinatario real.
+- [ ] Configurar correo y antispam en ensayo, sin secretos en el navegador.
+- [ ] Probar envíos de artículo y paquete, duplicados, fallo de correo, cambio de términos y cuenta no autorizada.
 
-**Objetivo:** transformar el catálogo en una tienda operable sin aumentar innecesariamente la complejidad del servidor.
+**Estado:** implementación local avanzada; no hay flujo extremo a extremo validado.
 
-**Alcance**
+## Fase 3 de 3 — Lanzamiento y operación
 
-- Añadir carrito y flujo de compra con validación de stock, datos de envío y resumen del pedido.
-- Integrar una pasarela de pago disponible en el país de operación (por ejemplo, tarjeta, PayPal, Mercado Pago o método local). El pago se realiza en la pasarela o con sus campos seguros; el servidor recibe solo el estado del pago mediante webhooks verificados.
-- Construir un panel administrativo protegido para productos, inventario, pedidos, clientes y cupones simples.
-- Configurar correos transaccionales: confirmación de pedido, pago recibido, cambio de estado y solicitud de cotización.
-- Definir entregas: retiro, mensajería local, tarifas por zona o integración con proveedor cuando sea necesaria.
-- Crear pruebas de las rutas críticas: agregar al carrito, pagar, descontar inventario, cancelar o reembolsar conforme a la pasarela elegida.
+Objetivo: publicar en HTTPS con seguridad, respaldos restaurables, manual operativo y aceptación del negocio.
 
-**Resultado verificable:** un cliente completa una compra de prueba de inicio a fin y el administrador puede gestionar el pedido e inventario desde el panel.
+- [ ] Separar ensayo y producción, definir dominio, hospedaje y responsables.
+- [ ] Aplicar migraciones con respaldo y restauración de prueba.
+- [ ] Ejecutar pruebas finales de seguridad, accesibilidad, móvil, contingencia y entrega de correo.
+- [ ] Cargar contenido real, entregar manual y obtener aprobación de la dueña.
 
-## Fase 3 — Escalamiento controlado y mantenimiento
+**Estado:** no iniciada como salida a producción.
 
-**Objetivo:** sostener el crecimiento sin rehacer la tienda ni sobredimensionar la infraestructura.
+## Próxima puerta de salida
 
-**Alcance**
-
-- Añadir búsqueda, filtros, productos relacionados, listas de favoritos y subcategorías solo cuando el catálogo lo justifique.
-- Incorporar métricas de rendimiento y conversión respetando privacidad, además de alertas de disponibilidad, errores y copias de seguridad fallidas.
-- Mejorar la entrega de contenido: CDN para imágenes, caché de páginas públicas y limpieza programada de datos temporales.
-- Definir actualizaciones mensuales de seguridad, recuperación de respaldo probada y registro de cambios.
-- Evaluar aumento de recursos únicamente con datos: tráfico, uso de CPU/RAM, tiempos de respuesta y tamaño de imágenes. Si se supera la capacidad del VPS, escalar primero RAM/CPU o mover imágenes a almacenamiento externo antes de dividir servicios.
-
-**Resultado verificable:** la tienda puede crecer en catálogo y tráfico conservando tiempos de carga cortos, recuperación ante fallos y costos predecibles.
-
-## Arquitectura recomendada para un VPS económico
-
-```text
-Visitante
-    ↓ HTTPS
-Nginx (caché, compresión, archivos estáticos)
-    ├── Tienda pública estática / renderizada
-    ├── API modular de catálogo, pedidos y administración
-    └── Pasarela externa de pagos
-             ↓ webhook firmado
-        API de pedidos
-             ↓
-      Base de datos relacional + respaldos
-```
-
-El prototipo portátil no consume recursos de servidor. Para el lanzamiento real, un VPS inicial con 1–2 vCPU, 2 GB de RAM y almacenamiento SSD puede servir para una tienda pequeña con tráfico moderado si las imágenes se optimizan y los pagos se delegan a una pasarela. La cifra exacta dependerá del catálogo, visitas simultáneas y panel administrativo; se revisará antes del lanzamiento real.
-
-## Decisiones necesarias antes de iniciar la Fase 2
-
-1. País, moneda e impuestos aplicables.
-2. Pasarela de pago y métodos deseados.
-3. Tipo de entrega y zonas de cobertura.
-4. Catálogo inicial: productos, precios, fotografías, existencias y políticas de cambios/devoluciones.
+No pasar de la fase 1 a la 2 como fase **verificada** hasta que exista un entorno de ensayo conectado y se demuestre: acceso administrativo, permisos de cada rol, orden persistente, un paquete publicado con artículos y una ficha pública sin precio. En el desarrollo local, `site-config.js` sigue en modo `demo`, que no permite guardar cambios ni recibir cotizaciones reales. El código del panel aún no forma parte de la versión pública de este repositorio.
