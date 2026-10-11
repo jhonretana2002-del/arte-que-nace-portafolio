@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Vista previa de Arte que Nace." />
+    <meta name="description" content="Arte textil hecho a mano. Descubre las piezas de Arte que Nace y solicita obras personalizadas." />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23231f20'/%3E%3Cpath d='M17 43V20h10l5 15 5-15h10v23h-7V29l-5 14h-6l-5-14v14z' fill='%23e9003d'/%3E%3C/svg%3E" />
     <title>Arte que Nace | Tienda</title>
     <link rel="preload" as="image" href="assets/logo-arte-que-nace-360.png" media="(min-width: 901px)" />
     <link rel="preload" as="font" type="font/woff2" href="assets/fonts/fraunces-latin-variable.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="assets/fonts/manrope-latin-variable.woff2" crossorigin />
-    <link rel="stylesheet" href="styles.css?v=type-refresh-1" />
+    <link rel="stylesheet" href="styles.css?v=catalog-live-mobile-1" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -19,33 +19,7 @@
           <img src="assets/logo-arte-que-nace-360.png" alt="Logo de Arte que Nace" width="360" height="360" fetchpriority="high" decoding="async" />
         </a>
 
-        <nav class="category-nav" aria-label="Explorar por categoría">
-          <button class="category-button is-active" type="button" data-category="Navidad" aria-pressed="true">
-            <span class="category-icon" aria-hidden="true">✦</span>
-            <span class="category-label">Navidad</span>
-            <span class="category-chevron" aria-hidden="true">›</span>
-          </button>
-          <button class="category-button" type="button" data-category="Religión" aria-pressed="false">
-            <span class="category-icon" aria-hidden="true">♰</span>
-            <span class="category-label">Religión</span>
-            <span class="category-chevron" aria-hidden="true">›</span>
-          </button>
-          <button class="category-button" type="button" data-category="Video Juegos" aria-pressed="false">
-            <span class="category-icon" aria-hidden="true">⌘</span>
-            <span class="category-label">Video Juegos</span>
-            <span class="category-chevron" aria-hidden="true">›</span>
-          </button>
-          <button class="category-button" type="button" data-category="Entretenimiento" aria-pressed="false">
-            <span class="category-icon" aria-hidden="true">◉</span>
-            <span class="category-label">Entretenimiento</span>
-            <span class="category-chevron" aria-hidden="true">›</span>
-          </button>
-          <button class="category-button" type="button" data-category="Cotizaciones" aria-pressed="false">
-            <span class="category-icon" aria-hidden="true">☷</span>
-            <span class="category-label">Cotizaciones</span>
-            <span class="category-chevron" aria-hidden="true">›</span>
-          </button>
-        </nav>
+        <nav class="category-nav" id="category-nav" aria-label="Explorar por categoría"></nav>
         <button class="mobile-category-trigger" id="mobile-category-trigger" type="button" aria-haspopup="dialog" aria-controls="category-panel" aria-expanded="false">
           <span class="mobile-category-icon" aria-hidden="true">✦</span>
           <span id="mobile-category-label">Navidad</span>
@@ -61,7 +35,7 @@
             <p class="hero-description">El canvas tejido es una expresión de arte textil que une color, paciencia y detalle. En Arte que Nace transformamos lana e hilos en cuadros, figuras, bolsos y piezas personalizadas que celebran personajes, recuerdos e ideas únicas.</p>
             <div class="hero-actions">
               <a class="button button-primary" href="#coleccion">Conoce las piezas</a>
-              <a class="button button-ghost" href="#contacto">Solicita una cotización</a>
+              <a class="button button-ghost" href="#coleccion">Explora las categorías</a>
             </div>
           </div>
           <div class="hero-gallery" role="region" aria-roledescription="carrusel" aria-label="Galería rotativa de obras textiles hechas a mano" tabindex="0">
@@ -99,27 +73,15 @@
         </section>
 
         <section class="collection" id="coleccion" aria-labelledby="collection-title">
+          <p class="catalog-notice" id="catalog-notice" hidden></p>
           <div class="section-heading">
             <div>
               <p class="eyebrow">Descubre</p>
               <h2 id="collection-title">Elegidos para ti</h2>
             </div>
-            <p class="category-state"><span></span><span id="category-status">Navidad seleccionada</span></p>
+            <p class="category-state"><span></span><span id="category-status">Cargando categorías</span></p>
           </div>
-          <div class="product-grid">
-            <article class="product-card">
-              <div class="product-visual yarn"></div>
-              <div class="product-info"><div><h3>Kit creativo</h3><p>Edición limitada</p></div><button type="button" aria-label="Agregar Kit creativo">+</button></div>
-            </article>
-            <article class="product-card">
-              <div class="product-visual mug"></div>
-              <div class="product-info"><div><h3>Taza ilustrada</h3><p>Hecha a mano</p></div><button type="button" aria-label="Agregar Taza ilustrada">+</button></div>
-            </article>
-            <article class="product-card">
-              <div class="product-visual print"></div>
-              <div class="product-info"><div><h3>Lámina artística</h3><p>Serie felina</p></div><button type="button" aria-label="Agregar Lámina artística">+</button></div>
-            </article>
-          </div>
+          <div class="product-grid" id="product-grid" aria-live="polite"></div>
         </section>
 
         <section class="about" id="nosotros">
@@ -143,6 +105,8 @@
       <p>Elige la categoría que deseas explorar.</p>
       <div id="panel-buttons"></div>
     </dialog>
-    <script src="app.js?v=gallery-controls-2"></script>
+    <script src="site-config.js?v=catalog-live-1"></script>
+    <script src="demo-catalog.js?v=packages-1"></script>
+    <script src="app.js?v=catalog-live-mobile-1"></script>
   </body>
 </html>

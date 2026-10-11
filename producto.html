@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Conoce una pieza de Arte que Nace." />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23231f20'/%3E%3Cpath d='M17 43V20h10l5 15 5-15h10v23h-7V29l-5 14h-6l-5-14v14z' fill='%23e9003d'/%3E%3C/svg%3E" />
+    <title>Pieza | Arte que Nace</title>
+    <link rel="stylesheet" href="styles.css?v=packages-1" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="detail-header">
+      <a class="detail-brand" href="index.html" aria-label="Arte que Nace, inicio">
+        <img src="assets/logo-arte-que-nace.png" alt="" />
+        <span>ARTE QUE NACE</span>
+      </a>
+      <a class="detail-back" href="index.html#coleccion">← Volver a la colección</a>
+    </header>
+    <main id="contenido" class="detail-shell">
+      <p class="catalog-notice" id="detail-notice" hidden></p>
+      <div class="detail-layout" id="detail-layout" hidden>
+        <div class="detail-gallery">
+          <div class="detail-image-frame"><img id="detail-image" alt="" /></div>
+          <div class="detail-thumbnails" id="detail-thumbnails" aria-label="Imágenes de la pieza"></div>
+        </div>
+        <div class="detail-copy">
+          <p class="eyebrow">Arte textil hecho a mano</p>
+          <h1 id="detail-title"></h1>
+          <p class="detail-summary" id="detail-summary"></p>
+          <p class="detail-price" id="detail-price">Cotización personalizada</p>
+          <p class="detail-availability" id="detail-availability"></p>
+          <div class="detail-description" id="detail-description"></div>
+          <section id="detail-included" class="detail-included" hidden><h2>Artículos incluidos</h2><ul id="detail-included-list"></ul></section>
+          <button class="button button-primary" id="detail-contact" type="button">Cotizar esta pieza</button>
+          <p class="detail-footnote">Solicitar una cotización no es una compra ni un compromiso de pago. El taller te contactará para confirmar los detalles.</p>
+        </div>
+      </div>
+    </main>
+    <dialog class="quote-dialog" id="quote-info-dialog" aria-labelledby="quote-info-title">
+      <div class="dialog-heading"><p class="eyebrow">Antes de empezar</p><button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button></div>
+      <h2 id="quote-info-title">Cada pieza se cotiza a tu medida</h2>
+      <p id="quote-explanation">El importe depende del tamaño, la calidad y los colores de la lana, la complejidad del diseño y si deseas el cuadro enmarcado o sin enmarcar. Cuéntanos lo que tienes en mente y te responderemos personalmente.</p>
+      <div class="quote-terms-box" id="quote-terms-text" tabindex="0" aria-label="Términos y condiciones"></div>
+      <p class="quote-terms-version" id="quote-terms-version"></p>
+      <label class="quote-check"><input type="checkbox" id="accept-terms" /> He leído y acepto los términos y condiciones para solicitar una cotización.</label>
+      <p class="quote-help">Al aceptar, se abrirá el formulario. Puedes cerrarlo sin enviar nada.</p>
+      <p class="quote-inline-error" id="quote-info-error" role="alert" hidden></p>
+    </dialog>
+    <dialog class="quote-dialog quote-form-dialog" id="quote-form-dialog" aria-labelledby="quote-form-title">
+      <div class="dialog-heading"><p class="eyebrow">Solicitud personalizada</p><button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button></div>
+      <h2 id="quote-form-title">Cuéntanos tu idea</h2>
+      <p id="quote-product-name"></p>
+      <div id="quote-success" class="quote-success" role="status" hidden></div>
+      <form id="quote-form">
+        <div class="quote-form-grid">
+          <label>Nombre completo *<input name="full_name" autocomplete="name" minlength="3" maxlength="120" required /></label>
+          <label>Teléfono *<input name="phone" type="tel" autocomplete="tel" minlength="7" maxlength="32" required /></label>
+          <label>Correo electrónico *<input name="email" type="email" autocomplete="email" maxlength="254" required /></label>
+          <label>Prefiero que me contacten por *<select name="contact_preference" required><option value="email">Correo electrónico</option><option value="whatsapp">WhatsApp</option><option value="phone">Llamada</option></select></label>
+          <label>Cantidad de piezas *<input name="quantity" type="number" min="1" max="100" value="1" required /></label>
+          <fieldset class="quote-options"><legend>¿Lo quieres enmarcado? *</legend><label><input name="framing" type="radio" value="yes" required /> Sí</label><label><input name="framing" type="radio" value="no" /> No</label><label><input name="framing" type="radio" value="unsure" checked /> No lo sé</label></fieldset>
+          <fieldset class="quote-options"><legend>Calidad de lana *</legend><label><input name="wool_quality" type="radio" value="standard" required /> Estándar</label><label><input name="wool_quality" type="radio" value="premium" /> Premium</label><label><input name="wool_quality" type="radio" value="unsure" checked /> Quiero asesoría</label></fieldset>
+          <label>Colores deseados<input name="colors" maxlength="300" placeholder="Ej.: azul, blanco y rojo" /></label>
+          <label>Ancho aproximado (cm)<input name="width_cm" type="number" inputmode="decimal" min="1" max="1000" step="0.01" placeholder="Si lo sabes" /></label>
+          <label>Alto aproximado (cm)<input name="height_cm" type="number" inputmode="decimal" min="1" max="1000" step="0.01" placeholder="Si lo sabes" /></label>
+          <label>Fecha deseada<input name="needed_by" type="date" /></label>
+        </div>
+        <label>Detalles del diseño o referencia<textarea name="notes" rows="4" maxlength="2000" placeholder="Personaje, retrato, mensaje, ocasión, estilo u otros detalles que quieras compartir."></textarea></label>
+        <p class="quote-help">Las medidas son opcionales, pero si conoces una debes indicar ambas. No adjuntes imágenes ni datos sensibles; el taller te pedirá referencias al contactarte.</p>
+        <div id="turnstile-container"></div>
+        <div class="quote-honeypot" aria-hidden="true"><label>Dejar vacío<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+        <p class="quote-inline-error" id="quote-form-error" role="alert" hidden></p>
+        <button class="button button-primary" id="send-quote" type="submit">Enviar solicitud</button>
+      </form>
+    </dialog>
+    <script src="site-config.js?v=catalog-live-1"></script>
+    <script src="demo-catalog.js?v=packages-1"></script>
+    <script src="producto.js?v=catalog-live-2"></script>
+  </body>
+</html>
