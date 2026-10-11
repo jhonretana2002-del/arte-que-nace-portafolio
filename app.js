@@ -168,7 +168,7 @@ function renderProducts() {
   if (!products.length) {
     const empty = document.createElement('p');
     empty.className = 'catalog-empty';
-    empty.textContent = 'Aún no hay piezas en esta categoría. Puedes solicitar una cotización personalizada.';
+    empty.textContent = 'Aún no hay piezas publicadas en esta categoría. Vuelve pronto para ver novedades.';
     productGrid.append(empty);
     return;
   }
