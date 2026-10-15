@@ -207,17 +207,15 @@ main { overflow:hidden; }
   height:3.5rem;
   display:grid;
   place-items:center;
-  border:1px solid rgba(245,240,232,.62);
+  border:1px solid var(--red);
   border-radius:50%;
-  background:rgba(17,16,17,.96);
-  color:var(--paper);
+  background:var(--red);
+  color:#fff;
   box-shadow:0 .6rem 1.6rem rgba(0,0,0,.42);
   transition:transform .2s ease, border-color .2s ease, background .2s ease;
 }
 .contact-dock-link svg { width:1.65rem; height:1.65rem; }
-.contact-dock-whatsapp { border-color:var(--red); background:var(--red); color:#fff; }
-.contact-dock-link:hover { transform:translateY(-2px); border-color:var(--red); background:#3a0b19; }
-.contact-dock-whatsapp:hover { background:#bb0031; }
+.contact-dock-link:hover { transform:translateY(-2px); background:#bb0031; }
 .contact-dock-link:focus-visible { outline:3px solid var(--paper); outline-offset:3px; }
 .contact-dock-label {
   position:absolute;
