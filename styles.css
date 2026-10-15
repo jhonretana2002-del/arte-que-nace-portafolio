@@ -190,3 +190,59 @@ main { overflow:hidden; }
 .quote-honeypot { position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
 #turnstile-container { margin:1rem 0; min-height:1rem; }
 @media (max-width:560px) { .quote-form-grid { grid-template-columns:1fr; } }
+
+/* Accesos rápidos de contacto: mismos tonos y geometría que la navegación. */
+.contact-dock {
+  position:fixed;
+  z-index:5;
+  right:clamp(.85rem,2vw,1.5rem);
+  bottom:clamp(.85rem,2vw,1.5rem);
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+}
+.contact-dock-link {
+  position:relative;
+  width:3.5rem;
+  height:3.5rem;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(245,240,232,.62);
+  border-radius:50%;
+  background:rgba(17,16,17,.96);
+  color:var(--paper);
+  box-shadow:0 .6rem 1.6rem rgba(0,0,0,.42);
+  transition:transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.contact-dock-link svg { width:1.65rem; height:1.65rem; }
+.contact-dock-whatsapp { border-color:var(--red); background:var(--red); color:#fff; }
+.contact-dock-link:hover { transform:translateY(-2px); border-color:var(--red); background:#3a0b19; }
+.contact-dock-whatsapp:hover { background:#bb0031; }
+.contact-dock-link:focus-visible { outline:3px solid var(--paper); outline-offset:3px; }
+.contact-dock-label {
+  position:absolute;
+  right:calc(100% + .7rem);
+  padding:.4rem .65rem;
+  border:1px solid var(--line);
+  border-radius:.2rem;
+  background:var(--ink);
+  color:var(--paper);
+  font-size:.78rem;
+  font-weight:700;
+  white-space:nowrap;
+  opacity:0;
+  transform:translateX(.3rem);
+  pointer-events:none;
+  transition:opacity .2s ease, transform .2s ease;
+}
+.contact-dock-link:hover .contact-dock-label,
+.contact-dock-link:focus-visible .contact-dock-label { opacity:1; transform:translateX(0); }
+@media (max-width:900px) {
+  .contact-dock { right:.8rem; bottom:calc(5.4rem + env(safe-area-inset-bottom)); flex-direction:row; }
+  .contact-dock-link { width:3.15rem; height:3.15rem; }
+  .contact-dock-label { display:none; }
+  .detail-header ~ .contact-dock { bottom:max(.9rem,env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .contact-dock-link, .contact-dock-label { transition:none; }
+}
