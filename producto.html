@@ -6,7 +6,7 @@
     <meta name="description" content="Conoce una pieza de Arte que Nace." />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23231f20'/%3E%3Cpath d='M17 43V20h10l5 15 5-15h10v23h-7V29l-5 14h-6l-5-14v14z' fill='%23e9003d'/%3E%3C/svg%3E" />
     <title>Pieza | Arte que Nace</title>
-    <link rel="stylesheet" href="styles.css?v=contact-dock-1" />
+    <link rel="stylesheet" href="styles.css?v=quotes-preview-1" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -41,9 +41,10 @@
       <div class="dialog-heading"><p class="eyebrow">Antes de empezar</p><button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button></div>
       <h2 id="quote-info-title">Cada pieza se cotiza a tu medida</h2>
       <p id="quote-explanation">El importe depende del tamaño, la calidad y los colores de la lana, la complejidad del diseño y si deseas el cuadro enmarcado o sin enmarcar. Cuéntanos lo que tienes en mente y te responderemos personalmente.</p>
+      <p class="quote-preview-notice" id="quote-preview-info" hidden>Vista previa: no escribas datos reales. Esta demostración no enviará ni guardará información.</p>
       <div class="quote-terms-box" id="quote-terms-text" tabindex="0" aria-label="Términos y condiciones"></div>
       <p class="quote-terms-version" id="quote-terms-version"></p>
-      <label class="quote-check"><input type="checkbox" id="accept-terms" /> He leído y acepto los términos y condiciones para solicitar una cotización.</label>
+      <label class="quote-check"><input type="checkbox" id="accept-terms" /> <span id="accept-terms-copy">He leído y acepto los términos y condiciones para solicitar una cotización.</span></label>
       <p class="quote-help">Al aceptar, se abrirá el formulario. Puedes cerrarlo sin enviar nada.</p>
       <p class="quote-inline-error" id="quote-info-error" role="alert" hidden></p>
     </dialog>
@@ -51,6 +52,7 @@
       <div class="dialog-heading"><p class="eyebrow">Solicitud personalizada</p><button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button></div>
       <h2 id="quote-form-title">Cuéntanos tu idea</h2>
       <p id="quote-product-name"></p>
+      <p class="quote-preview-notice" id="quote-preview-form" hidden>Demostración únicamente: no uses datos reales. Nada de lo que escribas aquí se envía ni se guarda.</p>
       <div id="quote-success" class="quote-success" role="status" hidden></div>
       <form id="quote-form">
         <div class="quote-form-grid">
@@ -84,8 +86,8 @@
         <span class="contact-dock-label" aria-hidden="true">WhatsApp</span>
       </a>
     </nav>
-    <script src="site-config.js?v=catalog-live-1"></script>
+    <script src="site-config.js?v=quotes-preview-1"></script>
     <script src="demo-catalog.js?v=packages-1"></script>
-    <script src="producto.js?v=catalog-live-2"></script>
+    <script type="module" src="producto.js?v=quotes-preview-1"></script>
   </body>
 </html>

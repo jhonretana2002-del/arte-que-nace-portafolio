@@ -246,3 +246,4 @@ main { overflow:hidden; }
 @media (prefers-reduced-motion:reduce) {
   .contact-dock-link, .contact-dock-label { transition:none; }
 }
+.quote-preview-notice { padding:.8rem .9rem; border:1px solid rgba(245,240,232,.38); background:rgba(245,240,232,.08); color:var(--paper) !important; font-size:.88rem; line-height:1.55; }

@@ -1,3 +1,5 @@
+import { quotePresentation } from './quote-mode.js?v=quotes-preview-1';
+
 const detailNotice = document.querySelector('#detail-notice');
 const detailLayout = document.querySelector('#detail-layout');
 const detailImage = document.querySelector('#detail-image');
@@ -9,7 +11,10 @@ const acceptTerms = document.querySelector('#accept-terms');
 const sendButton = document.querySelector('#send-quote');
 const config = window.ARTE_QUE_NACE_CONFIG || {};
 const isDemo = location.protocol === 'file:' || (config.catalogMode || config.mode) !== 'live';
-const quotesEnabled = !isDemo && (config.quoteMode || config.mode) === 'live';
+const quoteState = quotePresentation(config, isDemo);
+const quotesEnabled = quoteState.live;
+const quotesPreview = quoteState.preview;
+const quotesAvailable = quoteState.available;
 
 let currentProduct;
 let currentTerms;
@@ -47,13 +52,15 @@ function render(product) {
   document.querySelector('#detail-availability').textContent = isDemo ? 'Vista de ejemplo' : 'Hecho a tu medida';
   document.querySelector('#detail-description').textContent = product.description || '';
   const contactButton = document.querySelector('#detail-contact');
-  contactButton.textContent = quotesEnabled
+  contactButton.textContent = quotesAvailable
     ? (isPackage ? 'Cotizar este paquete' : 'Cotizar esta pieza')
     : 'Cotizaciones en línea próximamente';
-  contactButton.disabled = !quotesEnabled;
+  contactButton.disabled = !quotesAvailable;
   document.querySelector('.detail-footnote').textContent = quotesEnabled
     ? 'Solicitar una cotización no es una compra ni un compromiso de pago. El taller te contactará para confirmar los detalles.'
-    : 'Puedes explorar el catálogo; el formulario de cotizaciones en línea se habilitará más adelante.';
+    : quotesPreview
+      ? 'Vista previa: puedes explorar el formulario, pero no envía ni guarda solicitudes.'
+      : 'Puedes explorar el catálogo; el formulario de cotizaciones en línea se habilitará más adelante.';
   document.querySelector('#quote-info-title').textContent = isPackage
     ? 'Cada paquete se cotiza a tu medida' : 'Cada pieza se cotiza a tu medida';
   document.querySelector('#quote-explanation').textContent = isPackage
@@ -93,12 +100,13 @@ function render(product) {
 }
 
 async function loadTerms() {
-  if (!quotesEnabled) {
+  if (quotesPreview) {
     return {
-      version: 0,
-      terms_text: 'VISTA DE DEMOSTRACIÓN. El negocio debe redactar y publicar desde el panel sus términos reales antes de recibir solicitudes. Estos términos de muestra no habilitan el envío de información.',
+      version: 'MUESTRA',
+      terms_text: 'VISTA DE DEMOSTRACIÓN. Estos no son términos legales ni habilitan solicitudes. Antes de recibir datos reales, el negocio debe redactar y publicar sus propios términos y aviso de privacidad revisados.',
     };
   }
+  if (!quotesEnabled) return null;
   const { getSupabase } = await import('./supabase-client.js');
   const { data, error } = await getSupabase().from('quote_settings')
     .select('version,terms_text').eq('id', true).maybeSingle();
@@ -107,11 +115,15 @@ async function loadTerms() {
 }
 
 async function openQuoteInfo() {
-  if (!currentProduct || !quotesEnabled) return;
+  if (!currentProduct || !quotesAvailable) return;
   currentTerms = null;
   acceptedVersion = null;
   acceptTerms.checked = false;
   acceptTerms.disabled = true;
+  document.querySelector('#accept-terms-copy').textContent = quotesPreview
+    ? 'Entiendo que es una demostración y que no debo ingresar datos reales.'
+    : 'He leído y acepto los términos y condiciones para solicitar una cotización.';
+  document.querySelector('#quote-preview-info').hidden = !quotesPreview;
   formError('', '#quote-info-error');
   document.querySelector('#quote-terms-text').textContent = 'Cargando términos y condiciones...';
   document.querySelector('#quote-terms-version').textContent = '';
@@ -146,6 +158,10 @@ function loadTurnstileScript() {
 }
 
 async function prepareTurnstile() {
+  if (quotesPreview) {
+    sendButton.disabled = false;
+    return;
+  }
   if (!quotesEnabled) {
     sendButton.disabled = true;
     formError('Las cotizaciones en línea todavía no están habilitadas.');
@@ -177,6 +193,8 @@ async function continueToForm() {
   document.querySelector('#quote-success').hidden = true;
   quoteForm.hidden = false;
   document.querySelector('#quote-product-name').textContent = `${currentProduct.kind === 'package' ? 'Paquete' : 'Artículo'}: ${currentProduct.title}`;
+  document.querySelector('#quote-preview-form').hidden = !quotesPreview;
+  sendButton.textContent = quotesPreview ? 'Simular envío' : 'Enviar solicitud';
   formError('');
   infoDialog.close();
   formDialog.showModal();
@@ -190,6 +208,22 @@ function numberOrNull(value) {
 
 async function submitQuote(event) {
   event.preventDefault();
+  if (quotesPreview) {
+    if (!currentProduct || !acceptedVersion || !acceptTerms.checked) return;
+    const values = new FormData(quoteForm);
+    const width = numberOrNull(String(values.get('width_cm')).trim());
+    const height = numberOrNull(String(values.get('height_cm')).trim());
+    if ((width === null) !== (height === null)) {
+      formError('Indica tanto el ancho como el alto, o deja ambos campos vacíos.');
+      return;
+    }
+    quoteForm.reset();
+    quoteForm.hidden = true;
+    const success = document.querySelector('#quote-success');
+    success.hidden = false;
+    success.textContent = 'Demostración completada. No se envió ni guardó ninguna información. Para recibir solicitudes reales aún deben configurarse y aprobarse los requisitos del negocio.';
+    return;
+  }
   if (!quotesEnabled || !currentProduct || !acceptedVersion) return;
   const values = new FormData(quoteForm);
   const width = numberOrNull(String(values.get('width_cm')).trim());
@@ -254,6 +288,13 @@ document.querySelectorAll('[data-close-dialog]').forEach((button) => {
   button.addEventListener('click', () => button.closest('dialog').close());
 });
 
+formDialog.addEventListener('close', () => {
+  if (!quotesPreview) return;
+  quoteForm.reset();
+  quoteForm.hidden = false;
+  document.querySelector('#quote-success').hidden = true;
+});
+
 async function start() {
   const slug = new URLSearchParams(location.search).get('slug');
   const type = new URLSearchParams(location.search).get('tipo') === 'paquete' ? 'package' : 'product';
@@ -277,7 +318,9 @@ async function start() {
     }
     notice(isDemo
       ? 'Vista demostrativa: este artículo o paquete es un ejemplo.'
-      : quotesEnabled ? '' : 'Catálogo real: las solicitudes de cotización en línea aún no están habilitadas.');
+      : quotesEnabled ? '' : quotesPreview
+        ? 'Catálogo real con formulario en modo de demostración; no se reciben solicitudes.'
+        : 'Catálogo real: las solicitudes de cotización en línea aún no están habilitadas.');
     render({ ...product, kind: type });
   } catch (error) {
     console.error('No se pudo cargar la pieza', error);
