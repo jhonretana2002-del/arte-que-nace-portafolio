@@ -132,8 +132,14 @@ function productCard(product) {
   if (product.image_url) {
     addCardImage(visual, product.image_url, product.image_alt || product.title);
   } else if (product.image_path) {
-    visual.dataset.storagePath = product.image_path;
-    visual.dataset.imageAlt = product.image_alt || product.title;
+    const thumbnail = window.ARTE_QUE_NACE_THUMBNAILS?.[product.image_path];
+    if (thumbnail) {
+      addCardImage(visual, thumbnail, product.image_alt || product.title);
+    } else {
+      // Las piezas nuevas siguen funcionando antes de generar su miniatura.
+      visual.dataset.storagePath = product.image_path;
+      visual.dataset.imageAlt = product.image_alt || product.title;
+    }
   }
   const info = document.createElement('div');
   info.className = 'product-info';
