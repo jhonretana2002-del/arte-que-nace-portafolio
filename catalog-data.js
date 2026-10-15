@@ -1,4 +1,6 @@
-import { getSupabase, signedImageUrl } from './supabase-client.js?v=catalog-live-2';
+import { getSupabase, signedImageUrls } from './supabase-client.js?v=catalog-fast-1';
+
+export { signedImageUrls };
 
 export async function loadCatalog() {
   const client = getSupabase();
@@ -34,18 +36,18 @@ export async function loadCatalog() {
   for (const image of packageImagesResult.data || []) {
     if (!firstImageByPackage.has(image.package_id)) firstImageByPackage.set(image.package_id, image);
   }
-  await Promise.all(products.map(async (product) => {
+  for (const product of products) {
     const image = firstImageByProduct.get(product.id);
-    if (!image) return;
+    if (!image) continue;
     product.image_alt = image.alt_text;
-    product.image_url = await signedImageUrl(image.storage_path);
-  }));
-  await Promise.all(packages.map(async (pack) => {
+    product.image_path = image.storage_path;
+  }
+  for (const pack of packages) {
     const image = firstImageByPackage.get(pack.id);
-    if (!image) return;
+    if (!image) continue;
     pack.image_alt = image.alt_text;
-    pack.image_url = await signedImageUrl(image.storage_path);
-  }));
+    pack.image_path = image.storage_path;
+  }
   return { categories: categoriesResult.data || [], products, packages };
 }
 
@@ -61,9 +63,11 @@ export async function loadProduct(slug) {
     .select('storage_path,alt_text,position')
     .eq('product_id', product.id).order('position');
   if (imageError) throw imageError;
-  product.images = await Promise.all((images || []).map(async (image) => ({
-    url: await signedImageUrl(image.storage_path), alt: image.alt_text,
-  })));
+  const signedUrls = await signedImageUrls((images || []).map((image) => image.storage_path));
+  product.images = (images || []).flatMap((image) => {
+    const url = signedUrls.get(image.storage_path);
+    return url ? [{ url, alt: image.alt_text }] : [];
+  });
   return product;
 }
 
@@ -82,9 +86,11 @@ export async function loadPackage(slug) {
   ]);
   if (imagesResult.error) throw imagesResult.error;
   if (itemsResult.error) throw itemsResult.error;
-  pack.images = await Promise.all((imagesResult.data || []).map(async (image) => ({
-    url: await signedImageUrl(image.storage_path), alt: image.alt_text,
-  })));
+  const signedUrls = await signedImageUrls((imagesResult.data || []).map((image) => image.storage_path));
+  pack.images = (imagesResult.data || []).flatMap((image) => {
+    const url = signedUrls.get(image.storage_path);
+    return url ? [{ url, alt: image.alt_text }] : [];
+  });
   pack.items = (itemsResult.data || []).map((item) => ({
     title: item.products?.title || '', slug: item.products?.slug || '',
   }));

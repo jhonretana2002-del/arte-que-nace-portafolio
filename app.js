@@ -13,6 +13,7 @@ const icons = ['✦', '♰', '⌘', '◉', '☷'];
 
 let catalog = { categories: [], products: [], packages: [] };
 let activeCategoryId = null;
+let signVisibleImages;
 
 function setNotice(message, isError = false) {
   catalogNotice.hidden = !message;
@@ -108,6 +109,15 @@ categoryPanel.addEventListener('click', (event) => {
   if (event.target === categoryPanel) categoryPanel.close();
 });
 
+function addCardImage(visual, url, alt) {
+  const image = document.createElement('img');
+  image.src = url;
+  image.alt = alt;
+  image.loading = 'lazy';
+  image.decoding = 'async';
+  visual.append(image);
+}
+
 function productCard(product) {
   const isPackage = product.kind === 'package';
   const article = document.createElement('article');
@@ -120,11 +130,10 @@ function productCard(product) {
   const visual = document.createElement('div');
   visual.className = 'product-visual';
   if (product.image_url) {
-    const image = document.createElement('img');
-    image.src = product.image_url;
-    image.alt = product.image_alt || product.title;
-    image.loading = 'lazy';
-    visual.append(image);
+    addCardImage(visual, product.image_url, product.image_alt || product.title);
+  } else if (product.image_path) {
+    visual.dataset.storagePath = product.image_path;
+    visual.dataset.imageAlt = product.image_alt || product.title;
   }
   const info = document.createElement('div');
   info.className = 'product-info';
@@ -173,6 +182,25 @@ function renderProducts() {
     return;
   }
   productGrid.append(...products.map(productCard));
+  if (signVisibleImages) {
+    const visuals = [...productGrid.querySelectorAll('.product-visual[data-storage-path]')];
+    if (visuals.length) {
+      void signVisibleImages(visuals.map((visual) => visual.dataset.storagePath))
+        .then((signedUrls) => {
+          for (const visual of visuals) {
+            if (!visual.isConnected) continue;
+            const url = signedUrls.get(visual.dataset.storagePath);
+            if (url) addCardImage(visual, url, visual.dataset.imageAlt);
+          }
+        })
+        .catch((error) => {
+          console.error('No se pudieron cargar las imágenes de la categoría', error);
+          if (visuals.some((visual) => visual.isConnected)) {
+            setNotice('No se pudieron cargar algunas imágenes. Puedes seguir explorando el catálogo.', true);
+          }
+        });
+    }
+  }
 }
 
 async function startCatalog() {
@@ -184,8 +212,9 @@ async function startCatalog() {
   }
   setNotice('Cargando catálogo...');
   try {
-    const { loadCatalog } = await import('./catalog-data.js?v=catalog-live-2');
+    const { loadCatalog, signedImageUrls } = await import('./catalog-data.js?v=catalog-fast-1');
     catalog = await loadCatalog();
+    signVisibleImages = signedImageUrls;
     setNotice('');
     renderCategories();
   } catch (error) {

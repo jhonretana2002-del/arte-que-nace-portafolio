@@ -309,7 +309,7 @@ async function start() {
       product = window.ARTE_QUE_NACE_DEMO[type === 'package' ? 'packages' : 'products']
         .find((item) => item.slug === slug);
     } else {
-      const { loadProduct, loadPackage } = await import('./catalog-data.js?v=catalog-live-2');
+      const { loadProduct, loadPackage } = await import('./catalog-data.js?v=catalog-fast-1');
       product = type === 'package' ? await loadPackage(slug) : await loadProduct(slug);
     }
     if (!product) {

@@ -2,6 +2,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 let adminClient;
 let publicClient;
+const signedImageCache = new Map();
 
 export function getSupabase({ admin = false } = {}) {
   const config = window.ARTE_QUE_NACE_CONFIG;
@@ -30,4 +31,31 @@ export async function signedImageUrl(path, options = {}) {
     .createSignedUrl(path, 3600);
   if (error) throw error;
   return data.signedUrl;
+}
+
+export async function signedImageUrls(paths) {
+  const uniquePaths = [...new Set(paths.filter(Boolean))];
+  const now = Date.now();
+  const missingPaths = uniquePaths.filter((path) => {
+    const cached = signedImageCache.get(path);
+    return !cached || cached.expiresAt <= now;
+  });
+
+  if (missingPaths.length) {
+    const { data, error } = await getSupabase()
+      .storage.from(window.ARTE_QUE_NACE_CONFIG.storageBucket || 'product-images')
+      .createSignedUrls(missingPaths, 3600);
+    if (error) throw error;
+    const expiresAt = Date.now() + 55 * 60 * 1000;
+    for (const item of data || []) {
+      if (item.path && item.signedUrl && !item.error) {
+        signedImageCache.set(item.path, { url: item.signedUrl, expiresAt });
+      }
+    }
+  }
+
+  return new Map(uniquePaths.flatMap((path) => {
+    const cached = signedImageCache.get(path);
+    return cached && cached.expiresAt > Date.now() ? [[path, cached.url]] : [];
+  }));
 }
